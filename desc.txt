@@ -1,0 +1,100 @@
+<sql-service name="cs.com.dbserver.chk" datasource="is_stat" paging="false"  type="simple">
+		<description>DB 서버 체크</description>
+		<result-name>result_default</result-name>
+		<query><![CDATA[
+		SELECT 1		
+		]]></query>
+	</sql-service>	
+
+
+private static final String[] dbIpAddr = new String[] {
+		"10.1.15.87",
+		"192.168.100.101"
+	};
+	private static final int dbPort = 1433;
+	private static final int DB_SERVER_SOCK_CONN_TIMEOUT = 5000;
+  
+  
+  
+  
+		int maxChkDbCnt = dbIpAddr.length; // HA 대상 DB서버 갯수
+		
+		for( int i=0; i<maxChkDbCnt; i++ ) {
+		// for( int i=1; i>=0; i-- ) {
+			
+			if( ServerAliveCheck(i) ) {
+			// if(DbServerChk(req, i)) {
+				/* 세션에 대한 핸들링은 관여하지 않는걸로... (그리고 아래 주석처리한 코드도 유효하지 않은 코드임)
+				if( DataSourceSelection.getInstance().getDataSourceSelectedId() != i ) {
+					ArrayList arr = SessionManager.getInstance().getAllHttpSessions();
+					for (int j = 0; j < arr.size(); j++) {
+						ErrorLogger.debug(">>>> session test : " +arr.get(j));
+						SessionManager.getInstance().removeHttpSession(arr.get(j).toString());
+					}
+					ErrorLogger.debug("session total count : " + SessionManager.getInstance().getTotalCount()); 
+				}*/
+				
+				DataSourceSelection.getInstance().setDataSourceSelectedId(i);
+				
+				break;
+			}
+		}
+    
+    
+	/**
+	 * SQL 서비스를 통해 DB서버 정상 유무 확인
+	 * @param req
+	 * @param selectDsId
+	 * @return
+	 */
+	private boolean DbServerChk(JediRequest req, int selectDsId) {
+		
+		try {
+			SQLParam sqlparam = new SQLParam();
+			sqlparam.setSqlName("cs.com.dbserver.chk");
+			if(selectDsId > 0) {
+				sqlparam.setDatasource("java:/comp/env/jdbc/mysql-backup" + selectDsId);
+			} else {
+				sqlparam.setDatasource("java:/comp/env/jdbc/mysql");
+			}
+			sqlparam = (SQLParam)BizDelegate.getInstance().execute("sqlService", req.getCommonDTO(), sqlparam);
+			return true;
+		} catch (Exception e) {
+			ErrorLogger.debug("DbServerChk Exception ------------------------------------");
+			return false;
+		}
+	}
+	
+	/**
+	 * Socket 접속을 통해 DB서버 정상 유무 확인 (Connection TimeOut을 설정할 수 있다.)
+	 * @param idx
+	 * @return
+	 */
+	private boolean ServerAliveCheck(int idx) {
+		boolean isAlive=false;
+		Socket socket = null;
+		
+		String ip = dbIpAddr[idx];
+		int port = dbPort;
+		
+		try {
+			SocketAddress socketAddress = new InetSocketAddress(ip, port);
+			socket = new Socket();
+			// socket.setSoTimeout(2000); /* InputStream에서 데이터읽을때의 timeout */
+			socket.connect(socketAddress, DB_SERVER_SOCK_CONN_TIMEOUT); /* socket연결 자체에대한 timeout */
+			isAlive = socket.isConnected();
+			
+			return isAlive;
+		} catch (Exception e) {
+			ErrorLogger.debug("ServerAliveCheck Exception ------------------------------------" + e.getMessage());
+			return false;
+		} finally {
+			if( socket != null ) {
+				try {
+					socket.close();
+				} catch (IOException e) {
+					ErrorLogger.debug("ServerAliveCheck Exception ------------------------------------" + e.getMessage());
+				}
+			}
+		}
+	}

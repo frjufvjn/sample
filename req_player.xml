@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<request-config>
+	<request name="cs.com.rm.player.service01" login="false">
+		<action-class>jedix.xwing.action.SQLXwingWebAction</action-class>
+		<page type='default'>/common/notXwing.jsp</page>
+	</request>
+	
+	<request name="cs.com.rm.player.service00" login="false">
+		<action-class>cs.com.rm.player.PlayerFileService</action-class>
+		<page type='default'>/common/notXwing.jsp</page>
+	</request>
+</request-config>
