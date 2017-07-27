@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<!--<meta http-equiv="X-UA-Compatible" content="IE=10" />-->
+<title>NOT XWING AJAX TEST</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<style type="text/css">
+	
+</style>
+<!--<script type="text/javascript" src="./linphone/utils.js"></script>-->
+
+<script type="text/javascript">
+	
+	window.onload = function () {
+		f_sendPushMessage();
+	};
+	
+	var f_sendPushMessage = function() {
+		try {
+			var _url = "http://localhost/cs.com.rm.player.service01.do"
+			var payload = {
+				_sqlName : "cs.hrm.hrm120m10p.sel"
+				, user_id : "pjw"
+			};
+			
+			$.ajax({
+				type : 'POST',
+				url : _url,
+				contentType : 'application/x-www-form-urlencoded; charset=UTF-8', // 이게 중요...
+				dataType : 'json',
+				// crossDomain: true,
+				data : payload, // JSON.stringify(payload),
+				success : function (data) {
+					console.log(JSON.stringify(data));
+				},
+				error : function (request,status,error) {
+					console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				}
+			});
+		} catch (e) {
+			// TODO: handle exception
+			console.log('>>> ' +e);
+		}
+	};
+</script>
+</head>
+<body>
+</body>
+</html>
