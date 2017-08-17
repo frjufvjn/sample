@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title></title>
+  <script type="text/javascript">
+
+    window.onload = function () {
+
+    };
+
+    function sendMessage() {
+      var xhr = new XMLHttpRequest();
+
+  		// var host = location.host;
+  		// var contextPath = '';
+  		// if( location.hostname == 'localhost' || location.hostname == '127.0.0.1' ) {
+  		// 	contextPath = 'wfm_pms';
+  		// } else {
+  		// 	contextPath = 'wfms';
+  		// }
+
+  		var url = 'http://localhost:3000/message';
+  		xhr.open('GET', url, true);
+  		xhr.onreadystatechange = function () {
+  			if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+  				console.log(xhr.responseText);
+  				// chartDataFromServer = JSON.parse(xhr.responseText);
+
+  			}
+  			// console.log('xht.status : ' + xhr.status);
+  		};
+  		xhr.send();
+    }
+  </script>
+</head>
+<body>
+  <a href="javascript:sendMessage()">send</a><br/><br/>
+</body>
+</html>

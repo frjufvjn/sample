@@ -1,0 +1,57 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Your First WebSocket!</title>
+</head>
+<body>
+	<script type="text/javascript">
+
+            var wsUri = "ws://localhost:8001/text";
+
+            function init() {
+							console.log("init()");
+              output = document.getElementById("output");
+            }
+
+            function f_login() {
+							websocket = new WebSocket(wsUri);
+              websocket.onopen = function(evt) {
+                console.log("connected to endpoint!");
+								websocket.send('{"type":"LOGIN","msg":"'+textID.value+'"}');
+              };
+              websocket.onmessage = function(evt) {
+								console.log("onmessage");
+                writeToScreen("Message Received: " + evt.data);
+              };
+              websocket.onerror = function(evt) {
+              	console.log("error: " + evt.data);
+              };
+            }
+
+            function f_sendMessage() {
+                websocket.send(message.value);
+                //websocket.close();
+            }
+
+            function writeToScreen(message) {
+                var pre = document.createElement("p");
+                pre.style.wordWrap = "break-word";
+                pre.innerHTML = message;
+
+                output.appendChild(pre);
+            }
+            window.addEventListener("load", init, false);
+        </script>
+	<h1 style="text-align: center;">Hello World WebSocket Client</h1>
+	<br>
+	<div style="text-align: center;">
+		<form action="">
+			<input onclick="f_login()" value="Login" type="button"> <input
+				id="textID" name="message" value="" type="text"><br>
+			<input onclick="f_sendMessage()" value="msg" type="button"> <input
+				id="message" name="message" value="" type="text"><br>
+		</form>
+	</div>
+	<div id="output"></div>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title></title>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script type="text/javascript">
+
+    window.onload = function () {
+      init();
+    };
+
+    var init = function() {
+      if ('WebSocket' in window) {
+        // ws = new WebSocket('ws://127.0.0.1:8000', 'example-echo');
+        ws = new WebSocket('ws://localhost:8080');
+
+        ws.onopen = function () {
+          $('#status').text('connected');
+
+          // {"cmd":"register","roomid":"0102798aa","clientid":"28637480"}
+          var uuid = createUUID();
+          ws.send(JSON.stringify({
+            "cmd":"register",
+            "roomid":"0102798aa",
+            "clientid":uuid
+          }));
+        };
+
+        ws.onmessage = function (evt) {
+          $('#messages').append($('<li>').text('Received message: ' + evt.data));
+        };
+
+        ws.onclose = function () {
+          $('#status').text('connection is closed');
+        };
+      }
+      else
+        $('#status').text('WebSocket not supported.');
+    };
+
+    var sendMessage = function() {
+      ws.send("send----------------");
+    };
+
+    function createUUID() {
+      // http://www.ietf.org/rfc/rfc4122.txt
+      var s = [];
+      var hexDigits = "0123456789abcdef";
+      for (var i = 0; i < 36; i++) {
+          s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+      }
+      s[14] = "4";  // bits 12-15 of the time_hi_and_version field to 0010
+      s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);  // bits 6-7 of the clock_seq_hi_and_reserved to 01
+      s[8] = s[13] = s[18] = s[23] = "-";
+
+      var uuid = s.join("");
+      return uuid;
+    }
+  </script>
+</head>
+<body>
+  <a href="javascript:sendMessage()">send</a><br/><br/>
+  Status: <span id="status"></span><br />
+  Messages: <ul id="messages"></ul>
+</body>
+</html>
