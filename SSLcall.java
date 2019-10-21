@@ -1,4 +1,3 @@
-package ssltest;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -35,11 +34,11 @@ public class SSLcall {
 		InputStream is = null;
 		HttpsURLConnection conn = null;
 		try {
-			SSLContext ctx = SSLContext.getInstance("TLS"); // SSLµµ °¡´É
+			SSLContext ctx = SSLContext.getInstance("TLS"); // SSLë„ ê°€ëŠ¥
 			ctx.init(
 					null, // new KeyManager[0], 
 					new TrustManager[] {new DefaultTrustManager()}, 
-					new SecureRandom() // nullµµ °¡´É
+					new SecureRandom() // nullë„ ê°€ëŠ¥
 					);
 			SSLContext.setDefault(ctx);
 
@@ -106,7 +105,7 @@ public class SSLcall {
 
 		@Override
 		public X509Certificate[] getAcceptedIssuers() {
-			// µÑ´Ù »ó°ü ¾øÀ½.
+			// ë‘˜ë‹¤ ìƒê´€ ì—†ìŒ.
 			// return null;
 			return new X509Certificate[0];
 		}
