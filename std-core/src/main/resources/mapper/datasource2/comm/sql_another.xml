@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="category2">
+
+	<select id="select_list_ds2" parameterType="map" resultType="map" statementType="PREPARED">
+		select * from t_device where device_id = #{device_id}
+	</select>
+	
+	<insert id="insert_test_ds2" parameterType="map">
+		insert into t_device (device_id, device_ip) values (#{device_id}, #{device_ip})
+	</insert>
+	
+	<insert id="insert_list_test_ds2" parameterType="list">
+		insert into t_device (device_id, device_ip) values (#{device_id}, #{device_ip})
+	</insert>
+	
+	<insert id="insert_tx_svc02_ds2" parameterType="map">
+		insert into t_device (device_id, device_ip) values ('key2','127.0.0.1')
+	</insert>
+</mapper>

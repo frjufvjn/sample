@@ -1,0 +1,41 @@
+spring:
+  datasource:
+      datasource1:
+        jdbc-url: jdbc:mysql://localhost:3306/hcheck_db
+        driver-class-name: com.mysql.jdbc.Driver
+        username: root
+        password: '!QAZ2wsx'
+        # idle-timeout: 30000
+        connectionTimeout: 60000
+#        auto-commit: false 이 프로젝트의 TransactionManager와 무관함.
+      datasource2:
+        jdbc-url: jdbc:mysql://localhost:3306/test
+        driver-class-name: com.mysql.jdbc.Driver
+        username: root
+        password: '!QAZ2wsx'
+        # idle-timeout: 30000
+        connection-timeout: 60000
+#      datasource3:
+#        jdbc-url: jdbc:mysql://localhost:3306/test
+#        driver-class-name: com.mysql.jdbc.Driver
+#        username: root
+#        password: '!QAZ2wsx'
+#        # idle-timeout: 30000
+#        connection-timeout: 60000
+#      datasource4:
+#        jdbc-url: jdbc:mysql://localhost:3306/test
+#        driver-class-name: com.mysql.jdbc.Driver
+#        username: root
+#        password: '!QAZ2wsx'
+#        # idle-timeout: 30000
+#        connection-timeout: 60000
+
+
+# [.properties 방식]
+# spring.main.allow-bean-definition-overriding=true
+
+# spring.datasource.hikari.jdbc-url=jdbc:mysql://localhost:3306/hcheck_db
+# spring.datasource.hikari.username=root
+# spring.datasource.hikari.password=!QAZ2wsx
+# spring.datasource.hikari.idle-timeout=30000
+# spring.datasource.hikari.connection-timeout=60000
